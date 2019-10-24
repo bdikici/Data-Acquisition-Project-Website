@@ -38,6 +38,14 @@
     scrollProperty: 'scroll'
   });
 
+	var halfHeight = function() {
+
+		$('.js-halfheight').css('height', $(window).height() -300);
+		$(window).resize(function(){
+			$('.js-halfheight').css('height', $(window).height() -300);
+		});
+
+	};
 
 	var fullHeight = function() {
 
@@ -48,6 +56,7 @@
 
 	};
 	fullHeight();
+	halfHeight();
 
 	// loader
 	var loader = function() {
