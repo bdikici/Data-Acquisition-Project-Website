@@ -1,3 +1,23 @@
+<?php
+
+session_start();
+
+# create login variable if user is logged in
+if(isset($_SESSION["Username"])){
+  $_SESSION["logedIn"] = True;
+}
+
+# log out user and unset session
+if(isset($_GET['action']) and $_GET['action'] == "logout"){
+
+  unset($_SESSION['Username']);
+  unset($_SESSION['logedIn']);
+  session_destroy();
+  header( 'Location: index.php' );
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -37,8 +57,19 @@
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="index.php" class="nav-link">Home</a></li>
+            <?php
+              if(isset($_SESSION['logedIn']) and $_SESSION['logedIn'] == True){
+                echo '<li class="nav-item"><a href="mybookings.php" class="nav-link">My Bookings</a></li>';
+              }
+            ?>
 	          <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
-	          <li class="nav-item cta"><a href="bookNow.php" class="nav-link">Book Now</a></li>
+            <?php
+              if(isset($_SESSION['logedIn']) and $_SESSION['logedIn'] == True){
+                echo '<li class="nav-item cta"><a href="index.php?action=logout" class="nav-link">Log Out</a></li>';
+              }else{
+                echo '<li class="nav-item cta"><a href="bookNow.php" class="nav-link">Book Now</a></li>';
+              }
+            ?>
 
 	        </ul>
 	      </div>

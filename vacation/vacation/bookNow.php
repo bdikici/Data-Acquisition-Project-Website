@@ -1,3 +1,27 @@
+  
+<!-- including php file -->
+<?php 
+  include 'php/connectDb.php';
+  include 'php/login.php';
+
+  # starting session before connecting
+  session_start();
+
+  # connecting to database
+  $conn = OpenCon();
+
+  # logging in 
+  logingIn($conn);
+
+  if(isset($errorMessage)) {
+      echo $errorMessage;
+  }
+
+
+  # disconnecting from the database
+  CloseCon($conn);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -57,12 +81,12 @@
               <h5 class="card-title text-center">Sign In</h5>
               <form class="form-signin" action = "?login=1" method = "post">
                 <div class="form-label-group">
-                  <input type="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+                  <input type="username" id="inputUsername" class="form-control" placeholder="Username" name = "inputUsername" required autofocus>
                   <label for="inputUsername">Username</label>
                 </div>
 
                 <div class="form-label-group">
-                  <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                  <input type="password" id="inputPassword" class="form-control" placeholder="Password" name = "inputPassword" required>
                   <label for="inputPassword">Password</label>
                 </div>
 
@@ -71,6 +95,7 @@
                   <label class="custom-control-label" for="customCheck1">Remember password</label>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="button" onclick = "alert('still on build')">Register now</button>
               </form>
             </div>
           </div>
@@ -165,15 +190,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
-  
-  <!-- including php file -->
-  <?php 
-  	include 'php/connectDb.php';
 
-  	$conn = OpenCon();
-
-  	echo "Connected successfully";
-  ?>
 
   </body>
 </html>
