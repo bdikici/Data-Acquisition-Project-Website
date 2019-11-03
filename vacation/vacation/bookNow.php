@@ -36,9 +36,9 @@
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item"><a href="index.html" class="nav-link" >Home</a></li>
-	          <li class="nav-item active"><a href="contact.html" class="nav-link">Contact</a></li>
-	          <li class="nav-item cta"><a href="#" class="nav-link">Book Now</a></li>
+	          <li class="nav-item"><a href="index.php" class="nav-link" >Home</a></li>
+	          <li class="nav-item active"><a href="contact.php" class="nav-link">Contact</a></li>
+	          <li class="nav-item cta"><a href="bookNow.php" class="nav-link">Book Now</a></li>
 
 	        </ul>
 	      </div>
@@ -55,7 +55,7 @@
           <div class="card card-signin my-5">
             <div class="card-body">
               <h5 class="card-title text-center">Sign In</h5>
-              <form class="form-signin">
+              <form class="form-signin" action = "?login=1" method = "post">
                 <div class="form-label-group">
                   <input type="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
                   <label for="inputUsername">Username</label>
