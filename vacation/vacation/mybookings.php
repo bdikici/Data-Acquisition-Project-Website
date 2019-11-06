@@ -1,15 +1,23 @@
-<?php
+  
+<!-- including php file -->
+<?php 
+  include 'php/connectDb.php';
+  include 'php/login.php';
 
-session_start();
+  # starting session before connecting
+  session_start();
+
+  # connecting to database
+  $conn = OpenCon();
 
 
-# log out user and unset session
-if(isset($_GET['action']) and $_GET['action'] == "logout"){
+  # log out user and unset session
+  if(isset($_GET['action']) and $_GET['action'] == "logout"){
 
-  unset($_SESSION['Username']);
-  session_destroy();
-  header( 'Location: index.php' );
-}
+    unset($_SESSION['Username']);
+    session_destroy();
+    header( 'Location: index.php' );
+  }
 
 ?>
 
@@ -40,24 +48,27 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+
   </head>
   <body>
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="index.html"> DIDISA <span>Parking Spaces</span></a>
+	      <a class="navbar-brand" href="index.html">DIDISA <span>Parking Spaces</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
 
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="index.php" class="nav-link">Home</a></li>
+        <div class="collapse navbar-collapse" id="ftco-nav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
             <?php
               if(isset($_SESSION['Username'])){
-                echo '<li class="nav-item"><a href="mybookings.php" class="nav-link">My Bookings</a></li>';
+                echo '<li class="nav-item active"><a href="mybookings.php" class="nav-link">My Bookings</a></li>';
               }
             ?>
-	          <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
+            <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
             <?php
               if(isset($_SESSION['Username'])){
                 echo '<li class="nav-item cta"><a href="index.php?action=logout" class="nav-link">Log Out</a></li>';
@@ -65,136 +76,58 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
                 echo '<li class="nav-item cta"><a href="bookNow.php" class="nav-link">Book Now</a></li>';
               }
             ?>
-
-	        </ul>
-	      </div>
+          </ul>
+        </div>
 	    </div>
 	  </nav>
     <!-- END nav -->
-    
-    <div class="hero-wrap js-fullheight" style="background-image: url('images/destination-22.jpg'); height: 881px;" data-stellar-background-ratio="0.5">
-      <div class="overlay"></div>
-      <div class="container">
+
+    <!-- USER BOOKING TABLE SECTION-->
+    <div class="hero-wrap js-fullheight"  data-stellar-background-ratio="0.5">
+      <div clas="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
-          <div class="col-md-9 text text-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
-          	<a href="images/videoplayback" class="icon-video popup-vimeo d-flex align-items-center justify-content-center mb-4">
-          		<span class="ion-ios-play"></span>
-            </a>
-            <p class="caps" data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Park comfortably at any corner of the world, without going around in circles</p>
-            <h1 data-scrollax="properties: { translateY: '30%', opacity: 1.6 }">Make Your Parking Amazing With Us</h1>
+          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto " data-scrollax=" properties: { translateY: '70%' }">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <table class="table">
+                <thead class="thead" style="background-color: #f93030;">
+                  <tr style="color: white;">
+                    <th scope="col">#</th>
+                    <th scope="col">Booking ID</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Parking Start</th>
+                    <th scope="col">Parking End</th>
+                    <th scope="col">Car Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
+			
 
-    <section class="ftco-section ftco-no-pb ftco-no-pt">
-    	<div class="container">
-	    	<div class="row">
-					<div class="col-md-12">
-						<div class="search-wrap-1 ftco-animate p-4">
-							<form action="#" class="search-property-1">
-		        		<div class="row">
-		        			<div class="col-lg align-items-end">
-		        				<div class="form-group">
-
-		          				<div class="form-field">
-
-
-				              </div>
-			              </div>
-		        			</div>
-		        			<div class="col-lg align-items-end">
-		        				<div class="form-group">
-		        					<label for="#">Check-in date</label>
-		        					<div class="form-field">
-		          					<div class="icon"><span class="ion-ios-calendar"></span></div>
-				                <input type="text" class="form-control checkin_date" placeholder="Check In Date">
-				              </div>
-			              </div>
-		        			</div>
-		        			<div class="col-lg align-items-end">
-		        				<div class="form-group">
-		        					<label for="#">Check-out date</label>
-		        					<div class="form-field">
-		          					<div class="icon"><span class="ion-ios-calendar"></span></div>
-				                <input type="text" class="form-control checkout_date" placeholder="Check Out Date">
-				              </div>
-			              </div>
-		        			</div>
-		        			<div class="col-lg align-items-end">
-		        				<div class="form-group">
-			              </div>
-		        			</div>
-		        			<div class="col-lg align-self-end">
-		        				<div class="form-group">
-		        					<div class="form-field">
-				                <input type="submit" value="Search" class="form-control btn btn-primary">
-				              </div>
-			              </div>
-		        			</div>
-		        		</div>
-		        	</form>
-		        </div>
-					</div>
-	    	</div>
-	    </div>
-    </section>
-
-    <section class="ftco-section services-section">
-      <div class="container" >
-        <div class="row d-flex">
-          <div class="col-md-6 order-md-last heading-section pl-md-5 ftco-animate">
-          	<h2 class="mb-4">It's time to start your adventure</h2>
-            <p>A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-            <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
-            A small river named Duden flows by their place and supplies it with the necessary regelialia.</p>
-            <p><a href="#" class="btn btn-primary py-3 px-4">Search Destination</a></p>
-          </div>
-          <div class="col-md-6">
-          	<div class="row">
-          		<div class="col-md-6 d-flex align-self-stretch ftco-animate">
-		            <div class="media block-6 services d-block">
-		              <div class="icon"><span class="flaticon-paragliding"></span></div>
-		              <div class="media-body">
-		                <h3 class="heading mb-3">Security</h3>
-		                <p>A small river named Duden flows by their place and supplies it with the necessary</p>
-		              </div>
-		            </div>      
-		          </div>
-		          <div class="col-md-6 d-flex align-self-stretch ftco-animate">
-		            <div class="media block-6 services d-block">
-		              <div class="icon"><span class="flaticon-route"></span></div>
-		              <div class="media-body">
-		                <h3 class="heading mb-3">Comfortable Parking</h3>
-		                <p>A small river named Duden flows by their place and supplies it with the necessary</p>
-		              </div>
-		            </div>    
-		          </div>
-		          <div class="col-md-6 d-flex align-self-stretch ftco-animate">
-		            <div class="media block-6 services d-block">
-		              <div class="icon"><span class="flaticon-tour-guide"></span></div>
-		              <div class="media-body">
-		                <h3 class="heading mb-3">Private Parking</h3>
-		                <p>A small river named Duden flows by their place and supplies it with the necessary</p>
-		              </div>
-		            </div>      
-		          </div>
-		          <div class="col-md-6 d-flex align-self-stretch ftco-animate">
-		            <div class="media block-6 services d-block">
-		              <div class="icon"><span class="flaticon-map"></span></div>
-		              <div class="media-body">
-		                <h3 class="heading mb-3">Manage your parking</h3>
-		                <p>A small river named Duden flows by their place and supplies it with the necessary</p>
-		              </div>
-		            </div>      
-		          </div>
-          	</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  
     <footer class="ftco-footer bg-bottom" style="background-image: url(images/footer-bg.jpg);">
       <div class="container">
         <div class="row mb-5">
@@ -281,6 +214,7 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
-    
+
+
   </body>
 </html>
