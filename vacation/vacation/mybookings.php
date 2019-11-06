@@ -83,7 +83,7 @@
     <!-- END nav -->
 
     <!-- USER BOOKING TABLE SECTION-->
-    <div class="hero-wrap js-fullheight"  data-stellar-background-ratio="0.5">
+    <div class="hero-wrap js-fullheight" style="background-image: url('images/mybookingimg.jpg'); height: 881px;" data-stellar-background-ratio="0.5">
       <div clas="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
           <div class="col-sm-9 col-md-7 col-lg-5 mx-auto " data-scrollax=" properties: { translateY: '70%' }">
