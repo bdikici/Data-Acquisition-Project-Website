@@ -1,12 +1,14 @@
 <?php
-
 session_start();
+
+include "searchPage.php";
 
 
 # log out user and unset session
 if(isset($_GET['action']) and $_GET['action'] == "logout"){
 
   unset($_SESSION['Username']);
+  echo "ENTERED FOR LOGOUT";
   session_destroy();
   header( 'Location: index.php' );
 }
@@ -40,6 +42,10 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="dist/bootstrap-clockpicker.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/github.min.css">
   </head>
   <body>
 	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
@@ -91,44 +97,91 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
     	<div class="container">
 	    	<div class="row">
 					<div class="col-md-12">
-						<div class="search-wrap-1 ftco-animate p-4">
-							<form action="#" class="search-property-1">
+            <?php 
+                if(isset($errorMessage)){
+                  echo '<div class="search-wrap-1 ftco-animate p-3" style="border: 3px solid #f93030;" >';
+                }else if(isset($registerBooking)){
+                  
+                  echo '<div class="search-wrap-1 ftco-animate p-3" style="border: 3px solid #25d900;" >';
+                }else{
+                  echo '<div class="search-wrap-1 ftco-animate p-3" style="border: 3px solid #33313b;" >';
+
+                }
+						
+            ?>
+							<form action="?query=1" method = "post" class="search-property-1">
 		        		<div class="row">
 		        			<div class="col-lg align-items-end">
 		        				<div class="form-group">
-
-		          				<div class="form-field">
-
-
-				              </div>
-			              </div>
-		        			</div>
-		        			<div class="col-lg align-items-end">
-		        				<div class="form-group">
-		        					<label for="#">Check-in date</label>
+		        					<label for="#">Park-in date</label>
 		        					<div class="form-field">
 		          					<div class="icon"><span class="ion-ios-calendar"></span></div>
-				                <input type="text" class="form-control checkin_date" placeholder="Check In Date">
+                        <?php
+                          if(isset($errorMessage)){
+                            echo '<input type="text" class="form-control checkin_date" value="'. $date .'" name="searchDate" placeholder="Check In Date" required>';
+                          }else{
+                            echo '<input type="text" class="form-control checkin_date" name="searchDate" placeholder="Check In Date" required>';
+
+                          }
+                        ?>
 				              </div>
 			              </div>
 		        			</div>
+
 		        			<div class="col-lg align-items-end">
 		        				<div class="form-group">
-		        					<label for="#">Check-out date</label>
+		        					<label for="#">Start-time</label>
 		        					<div class="form-field">
 		          					<div class="icon"><span class="ion-ios-calendar"></span></div>
-				                <input type="text" class="form-control checkout_date" placeholder="Check Out Date">
+                        <input class="form-control" type="time" value="10:00:00" name ="searchStart" id="example-time-input">
 				              </div>
 			              </div>
 		        			</div>
-		        			<div class="col-lg align-items-end">
-		        				<div class="form-group">
-			              </div>
-		        			</div>
+                  <div class="col-lg align-items-end">
+                    <div class="form-group">
+                      <label for="#">End-time</label>
+                      <div class="form-field">
+                        <div class="icon"><span class="ion-ios-calendar"></span></div>
+                        <input class="form-control" type="time" value="13:00:00" name ="searchEnd" id="example-time-input">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg align-items-end">
+                    <div class="form-group">
+                      <label for="#">Car Type</label>
+                      <div class="form-field">
+                        <select class="browser-default custom-select" name="searchCarType" required>
+                          <option selected disabled>Select Car-Type</option>
+                          <option value="Truck">Truck</option>
+                          <option value="Car">Car</option>
+                          <option value="Bike">Bike</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <?php 
+                  if(isset($errorMessage)){
+                    echo '<div class="col-lg align-items-end">
+                    <div class="form-group">
+                      <label for="#">Error</label>
+                      <br>
+                      <label">'. $errorMessage . '</label>
+                    </div>
+                  </div> ';
+                  } else if(isset($registerBooking)){
+                    echo '<div class="col-lg align-items-end">
+                    <div class="form-group">
+                      <label for="#">Booked!</label>
+                      <br>
+                      <label"> Successfully </label>
+                    </div>
+                  </div> ';
+                  }
+              ?>
 		        			<div class="col-lg align-self-end">
 		        				<div class="form-group">
 		        					<div class="form-field">
-				                <input type="submit" value="Search" class="form-control btn btn-primary">
+                        <input type="submit" value="Book Slot" class="form-control btn btn-primary">
 				              </div>
 			              </div>
 		        			</div>
@@ -139,6 +192,7 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
 	    	</div>
 	    </div>
     </section>
+
 
     <section class="ftco-section services-section">
       <div class="container" >
@@ -281,6 +335,9 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
+  <script type="text/javascript">
+$('.clockpicker').clockpicker();
+</script>
     
   </body>
 </html>

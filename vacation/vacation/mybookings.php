@@ -1,15 +1,18 @@
   
 <!-- including php file -->
 <?php 
-  include 'php/connectDb.php';
-  include 'php/login.php';
-
   # starting session before connecting
   session_start();
+
+  include 'php/connectDb.php';
+  include 'php/userBookings.php';
+  include 'php/login.php';
+
 
   # connecting to database
   $conn = OpenCon();
 
+  $_SESSION["resultPage"] = 0;
 
   # log out user and unset session
   if(isset($_GET['action']) and $_GET['action'] == "logout"){
@@ -88,7 +91,7 @@
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
           <div class="col-sm-9 col-md-7 col-lg-5 mx-auto " data-scrollax=" properties: { translateY: '70%' }">
           <div class="card card-signin my-5">
-            <div class="card-body">
+            <div class="card-body" fixed>
               <table class="table">
                 <thead class="thead" style="background-color: #f93030;">
                   <tr style="color: white;">
@@ -100,27 +103,25 @@
                     <th scope="col">Car Type</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
+                <tbody class="bookingHere">
+                <?php 
+
+                  userBookings($_SESSION['Username']['UserID'], $conn);
+                ?>
                 </tbody>
               </table>
+              <select class="custom-select custom-select-sm text-center selectingtable" >
+                <?php
+
+                  for($x = 0; $x < getNumberResutls($_SESSION['Username']['UserID'],$conn); $x++){
+                    if($x == 0){
+                      echo '<option selected>' . ($x + 1) . '</option>';
+                    }else{
+                      echo '<option value="' . ($x + 1) . '">' . ($x + 1) . '</option>';
+                    }
+                  }
+                ?>
+              </select>
             </div>
           </div>
         </div>
@@ -215,6 +216,18 @@
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
 
+  <!-- This is an ajax code -->
+  <script>
+   $(document).ready(function(){
+      $( ".selectingtable" ).change(function() {
+        var num_result = $( ".selectingtable option:selected" ).text();
+        console.log(num_result);
+        $(".bookingHere").load("php/newBookings.php", {
+          new_num_result: num_result
+        });
+      });
+   })
+  </script>
 
   </body>
 </html>

@@ -15,7 +15,7 @@ function insertData($username, $password, $conn){
         echo password_verify($password, $row["Password"]);
 
         if($password == $row["Password"]){
-            $_SESSION['Username'] = $row['Username'];
+            $_SESSION['Username'] = $row;
             header( 'Location: index.php' );
         } else {
             echo '<script language="javascript">';
