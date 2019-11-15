@@ -1,7 +1,6 @@
   
 <!-- including php file -->
 <?php 
-  include 'php/connectDb.php';
   include 'php/fetch_data.php';
 
   # starting session before connecting
@@ -10,7 +9,6 @@
   unset($_SESSION["errorMessage"]);
   unset($_SESSION["registerBooking"]);
   # connecting to database
-  $conn = OpenCon();
 
   if(isset($errorMessage)) {
       echo $errorMessage;
@@ -52,6 +50,7 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <body>
 
@@ -79,37 +78,42 @@
 
     <div class="container">
       <div class="row">
-        <div class="col-sm">
-          <div class="row">
-            <div class="col text-center"><?php echo '<h1 class="text-center">' . numUsers($conn) . '</h1>' ?></div>
-          </div> 
-          <div class = "row">
-            <h2 class="card-title">Users</h2>
-            <p class="card-text">The number of Users registered on your website.</p>
-          </div>          
-        </div>
-        <div class="col-sm">
+        <div class="col-sm border">
           <div class="col-sm">
             <div class="row">
-              <div class="col text-center"><?php echo '<h1 class="text-center">' . numBookings($conn) . '</h1>' ?></div>
+              <div class="col text-center"><?php echo '<h1 class="text-center">' . numUsers() . '</h1>' ?></div>
             </div> 
             <div class = "row">
-              <h2 class="card-title">Bookings Today</h2>
+              <h2 class="card-title"><i class="fa fa-user" style="font-size:34px;"></i> Users</h2>
+              <p class="card-text">The number of Users registered on your website.</p>
+            </div>
+          </div>          
+        </div>
+        <div class="col-sm border">
+          <div class="col-sm">
+            <div class="row">
+              <div class="col text-center"><?php echo '<h1 class="text-center">' . numBookings() . '</h1>' ?></div>
+            </div> 
+            <div class = "row">
+              <h2 class="card-title"><i class="fa fa-address-book-o" style="font-size:34px"></i> Bookings</h2>
               <p class="card-text">Number of Booking made today</p>
             </div>          
           </div>
         </div>
-        <div class="col-sm">
+        <div class="col-sm border">
           <div class="col-sm">
             <div class="row">
-              <div class="col text-center"><?php echo '<h1 class="text-center">' . revenue($conn) . ' €</h1>' ?></div>
+              <div class="col text-center"><?php echo '<h1 class="text-center">' . revenue() . ' €</h1>' ?></div>
             </div> 
             <div class = "row">
-              <h2 class="card-title">Today's Revenue</h2>
-              <p class="card-text">Total Revenue made</p>
+              <h2 class="card-title">Total Revenue</h2>
+              <p class="card-text">Total revenue made today</p>
             </div>          
           </div>
         </div>
+      </div>
+      <div class="row border">
+          <canvas id="myChart" ;></canvas> 
       </div>
     </div>
 
