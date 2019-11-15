@@ -28,6 +28,7 @@ if($result->num_rows > 0){
             <td>' . $row["Parking_Start"] . '</td>
             <td>' . $row["Parking_End"] . '</td>
             <td>' . $row["carType"] . '</td>
+            <td>' . $row["Payment"] . '</td>
           </tr>';
     $ind = $ind +1;
   }

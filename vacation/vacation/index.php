@@ -1,9 +1,6 @@
 <?php
 session_start();
 
-include "searchPage.php";
-
-
 # log out user and unset session
 if(isset($_GET['action']) and $_GET['action'] == "logout"){
 
@@ -18,7 +15,7 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Vacation - Free Bootstrap 4 Template by Colorlib</title>
+    <title>DIDISA - Parking Spaces</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -58,9 +55,14 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="index.php" class="nav-link">Home</a></li>
+            
             <?php
-              if(isset($_SESSION['Username'])){
+
+
+              if(isset($_SESSION['Username']) && $_SESSION['Username']["Username"] != "admin2"){
                 echo '<li class="nav-item"><a href="mybookings.php" class="nav-link">My Bookings</a></li>';
+              }else if(isset($_SESSION['Username']) && $_SESSION["Username"]["Username"] == "admin2"){
+              	echo '<li class="nav-item"><a href="stats.php" class="nav-link">Statistic</a></li>';
               }
             ?>
 	          <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
@@ -98,9 +100,9 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
 	    	<div class="row">
 					<div class="col-md-12">
             <?php 
-                if(isset($errorMessage)){
+                if(isset($_SESSION["errorMessage"])){
                   echo '<div class="search-wrap-1 ftco-animate p-3" style="border: 3px solid #f93030;" >';
-                }else if(isset($registerBooking)){
+                }else if(isset($_SESSION["registerBooking"])){
                   
                   echo '<div class="search-wrap-1 ftco-animate p-3" style="border: 3px solid #25d900;" >';
                 }else{
@@ -109,7 +111,7 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
                 }
 						
             ?>
-							<form action="?query=1" method = "post" class="search-property-1">
+							<form action="searchPage.php" method = "post" class="search-property-1">
 		        		<div class="row">
 		        			<div class="col-lg align-items-end">
 		        				<div class="form-group">
@@ -117,12 +119,9 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
 		        					<div class="form-field">
 		          					<div class="icon"><span class="ion-ios-calendar"></span></div>
                         <?php
-                          if(isset($errorMessage)){
-                            echo '<input type="text" class="form-control checkin_date" value="'. $date .'" name="searchDate" placeholder="Check In Date" required>';
-                          }else{
+
                             echo '<input type="text" class="form-control checkin_date" name="searchDate" placeholder="Check In Date" required>';
 
-                          }
                         ?>
 				              </div>
 			              </div>
@@ -160,15 +159,15 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
                     </div>
                   </div>
                   <?php 
-                  if(isset($errorMessage)){
+                  if(isset($_SESSION["errorMessage"])){
                     echo '<div class="col-lg align-items-end">
                     <div class="form-group">
                       <label for="#">Error</label>
                       <br>
-                      <label">'. $errorMessage . '</label>
+                      <label">'. $_SESSION["errorMessage"] . '</label>
                     </div>
                   </div> ';
-                  } else if(isset($registerBooking)){
+                  } else if(isset($_SESSION["registerBooking"])){
                     echo '<div class="col-lg align-items-end">
                     <div class="form-group">
                       <label for="#">Booked!</label>
@@ -176,6 +175,7 @@ if(isset($_GET['action']) and $_GET['action'] == "logout"){
                       <label"> Successfully </label>
                     </div>
                   </div> ';
+                  echo "<script type='text/javascript'>alert('Payment: " . $_SESSION["payment"] . "' </script>";
                   }
               ?>
 		        			<div class="col-lg align-self-end">

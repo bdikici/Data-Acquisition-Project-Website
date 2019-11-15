@@ -7,6 +7,8 @@
   # starting session before connecting
   session_start();
 
+  unset($_SESSION["errorMessage"]);
+  unset($_SESSION["registerBooking"]);
   # connecting to database
   $conn = OpenCon();
 

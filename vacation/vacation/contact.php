@@ -2,6 +2,9 @@
 
 session_start();
 
+  unset($_SESSION["errorMessage"]);
+  unset($_SESSION["registerBooking"]);
+  
 if(isset($_GET['action']) and $_GET['action'] == "logout"){
 
   unset($_SESSION['Username']);

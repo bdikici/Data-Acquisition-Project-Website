@@ -1,35 +1,34 @@
   
 <!-- including php file -->
 <?php 
+  include 'php/connectDb.php';
+  include 'php/fetch_data.php';
+
   # starting session before connecting
   session_start();
 
-  include 'php/connectDb.php';
-  include 'php/userBookings.php';
-  include 'php/login.php';
-
   unset($_SESSION["errorMessage"]);
   unset($_SESSION["registerBooking"]);
-  
   # connecting to database
   $conn = OpenCon();
 
-  $_SESSION["resultPage"] = 0;
-
-  # log out user and unset session
-  if(isset($_GET['action']) and $_GET['action'] == "logout"){
-
-    unset($_SESSION['Username']);
-    session_destroy();
-    header( 'Location: index.php' );
+  if(isset($errorMessage)) {
+      echo $errorMessage;
   }
 
+  if(isset($_GET['action']) and $_GET['action'] == "logout"){
+
+  unset($_SESSION['Username']);
+  echo "ENTERED FOR LOGOUT";
+  session_destroy();
+  header( 'Location: index.php' );
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Vacation - Free Bootstrap 4 Template by Colorlib</title>
+    <title>DIDISA - Parking Spaces</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -53,84 +52,66 @@
     <link rel="stylesheet" href="css/flaticon.css">
     <link rel="stylesheet" href="css/icomoon.css">
     <link rel="stylesheet" href="css/style.css">
-
-    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
-
   </head>
   <body>
-	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+
+	  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark navbar-light" id="ftco-navbar">
 	    <div class="container">
 	      <a class="navbar-brand" href="index.html">DIDISA <span>Parking Spaces</span></a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
 
-        <div class="collapse navbar-collapse" id="ftco-nav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item"><a href="index.php" class="nav-link">Home</a></li>
-            <?php
-              if(isset($_SESSION['Username'])){
-                echo '<li class="nav-item active"><a href="mybookings.php" class="nav-link">My Bookings</a></li>';
-              }
-            ?>
-            <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
-            <?php
-              if(isset($_SESSION['Username'])){
-                echo '<li class="nav-item cta"><a href="index.php?action=logout" class="nav-link">Log Out</a></li>';
-              }else{
-                echo '<li class="nav-item cta"><a href="bookNow.php" class="nav-link">Book Now</a></li>';
-              }
-            ?>
-          </ul>
-        </div>
+	      <div class="collapse navbar-collapse" id="ftco-nav">
+	        <ul class="navbar-nav ml-auto">
+	          <li class="nav-item"><a href="index.php" class="nav-link" >Home</a></li>
+            <li class="nav-item active"><a href="stats.php" class="nav-link">Statistic</a></li>
+	          <li class="nav-item"><a href="contact.php" class="nav-link">Contact</a></li>
+	          <li class="nav-item cta"><a href="index.php?action=logout" class="nav-link">Log Out</a></li>
+
+	        </ul>
+	      </div>
 	    </div>
 	  </nav>
     <!-- END nav -->
+    <br>
+    <!-- LOGIN SECTION-->
 
-    <!-- USER BOOKING TABLE SECTION-->
-    <div class="hero-wrap js-fullheight" style="background-image: url('images/mybookingimg.jpg'); height: 881px;" data-stellar-background-ratio="0.5">
-      <div clas="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center" data-scrollax-parent="true">
-          <div class="col-sm-9 col-md-7 col-lg-5 mx-auto " data-scrollax=" properties: { translateY: '70%' }">
-          <div class="card card-signin my-5">
-            <div class="card-body" fixed>
-              <table class="table">
-                <thead class="thead" style="background-color: #f93030;">
-                  <tr style="color: white;">
-                    <th scope="col">#</th>
-                    <th scope="col">Booking ID</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Parking Start</th>
-                    <th scope="col">Parking End</th>
-                    <th scope="col">Car Type</th>
-                    <th scope="col">Payment</th>                    
-                  </tr>
-                </thead>
-                <tbody class="bookingHere">
-                <?php 
-
-                  userBookings($_SESSION['Username']['UserID'], $conn);
-                ?>
-                </tbody>
-              </table>
-              <select class="custom-select custom-select-sm text-center selectingtable" >
-                <?php
-
-                  for($x = 0; $x < getNumberResutls($_SESSION['Username']['UserID'],$conn); $x++){
-                    if($x == 0){
-                      echo '<option selected>' . ($x + 1) . '</option>';
-                    }else{
-                      echo '<option value="' . ($x + 1) . '">' . ($x + 1) . '</option>';
-                    }
-                  }
-                ?>
-              </select>
-            </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="row">
+            <div class="col text-center"><?php echo '<h1 class="text-center">' . numUsers($conn) . '</h1>' ?></div>
+          </div> 
+          <div class = "row">
+            <h2 class="card-title">Users</h2>
+            <p class="card-text">The number of Users registered on your website.</p>
+          </div>          
+        </div>
+        <div class="col-sm">
+          <div class="col-sm">
+            <div class="row">
+              <div class="col text-center"><?php echo '<h1 class="text-center">' . numBookings($conn) . '</h1>' ?></div>
+            </div> 
+            <div class = "row">
+              <h2 class="card-title">Bookings Today</h2>
+              <p class="card-text">Number of Booking made today</p>
+            </div>          
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="col-sm">
+            <div class="row">
+              <div class="col text-center"><?php echo '<h1 class="text-center">' . revenue($conn) . ' €</h1>' ?></div>
+            </div> 
+            <div class = "row">
+              <h2 class="card-title">Today's Revenue</h2>
+              <p class="card-text">Total Revenue made</p>
+            </div>          
           </div>
         </div>
       </div>
     </div>
-			
 
     <footer class="ftco-footer bg-bottom" style="background-image: url(images/footer-bg.jpg);">
       <div class="container">
@@ -218,19 +199,16 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
-
-  <!-- This is an ajax code -->
-  <script>
-   $(document).ready(function(){
-      $( ".selectingtable" ).change(function() {
-        var num_result = $( ".selectingtable option:selected" ).text();
-        console.log(num_result);
-        $(".bookingHere").load("php/newBookings.php", {
-          new_num_result: num_result
-        });
-      });
-   })
-  </script>
+  <!-- CDN for Charts.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js" integrity="sha256-qSIshlknROr4J8GMHRlW3fGKrPki733tLq+qeMCR05Q=" crossorigin="anonymous"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+  <script type="text/javascript" src="js/webplots.js"></script>
 
   </body>
 </html>
+
+<?php 
+
+  # disconnecting from the database
+  CloseCon($conn);
+?>
